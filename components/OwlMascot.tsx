@@ -6,7 +6,8 @@ import React, { useEffect, useRef } from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
 import { colors } from '../lib/colors';
 import { typography } from '../lib/typography';
-import { OwlMood } from '../types';
+
+export type OwlMood = 'happy' | 'concerned' | 'warning' | 'thinking';
 
 interface OwlMascotProps {
   mood: OwlMood;
@@ -30,7 +31,7 @@ const OwlMascot: React.FC<OwlMascotProps> = ({ mood, message }) => {
         useNativeDriver: true,
       }),
     ]).start();
-  }, [mood]);
+  }, [mood, bounceAnim]);
 
   // Get owl icon based on mood
   const getOwlIcon = () => {

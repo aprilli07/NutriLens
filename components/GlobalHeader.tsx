@@ -1,91 +1,63 @@
 /**
- * Global header component with settings button
+ * Screen header with optional back button and a settings shortcut.
  */
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors } from '../lib/colors';
 
-interface GlobalHeaderProps {
-  showBackButton?: boolean;
+interface Props {
   title?: string;
+  showBackButton?: boolean;
+  showSettings?: boolean;
 }
 
-const GlobalHeader: React.FC<GlobalHeaderProps> = ({ 
-  showBackButton = false, 
-  title 
-}) => {
+export default function GlobalHeader({ title, showBackButton = false, showSettings = true }: Props) {
   const router = useRouter();
-
-  const handleSettingsPress = () => {
-    router.push('/settings');
-  };
-
-  const handleBackPress = () => {
-    router.back();
-  };
+  const insets = useSafeAreaInsets();
 
   return (
-    <View style={styles.container}>
-      <View style={styles.leftSection}>
+    <View style={[styles.container, { paddingTop: insets.top + 12 }]}>
+      <View style={styles.left}>
         {showBackButton && (
-          <TouchableOpacity 
-            style={styles.backButton}
-            onPress={handleBackPress}
+          <TouchableOpacity
+            style={styles.iconButton}
+            onPress={() => (router.canGoBack() ? router.back() : router.replace('/home'))}
+            accessibilityRole="button"
+            accessibilityLabel="Go back"
           >
             <Ionicons name="arrow-back" size={24} color={colors.text.primary} />
           </TouchableOpacity>
         )}
         {title && (
-          <View style={styles.titleContainer}>
-            <Text style={styles.titleText}>{title}</Text>
-          </View>
+          <Text style={styles.title} numberOfLines={1} accessibilityRole="header">
+            {title}
+          </Text>
         )}
       </View>
-      
-      <TouchableOpacity 
-        style={styles.settingsButton}
-        onPress={handleSettingsPress}
-      >
-        <Ionicons name="settings-outline" size={24} color={colors.text.primary} />
-      </TouchableOpacity>
+      {showSettings && (
+        <TouchableOpacity style={styles.iconButton} onPress={() => router.push('/settings')} accessibilityRole="button" accessibilityLabel="Settings">
+          <Ionicons name="settings-outline" size={24} color={colors.text.primary} />
+        </TouchableOpacity>
+      )}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
+    paddingHorizontal: 16,
+    paddingBottom: 12,
     backgroundColor: colors.surface,
     borderBottomWidth: 1,
-    borderBottomColor: colors.text.secondary + '20',
-    paddingTop: 50, // Account for status bar
+    borderBottomColor: colors.border,
   },
-  leftSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  backButton: {
-    padding: 8,
-    marginRight: 12,
-  },
-  titleContainer: {
-    flex: 1,
-  },
-  titleText: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    color: colors.text.primary,
-  },
-  settingsButton: {
-    padding: 8,
-  },
+  left: { flexDirection: 'row', alignItems: 'center', flex: 1 },
+  iconButton: { padding: 8 },
+  title: { fontSize: 26, fontWeight: '700', color: colors.text.primary, marginLeft: 4, flexShrink: 1 },
 });
-
-export default GlobalHeader;

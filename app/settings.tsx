@@ -1,288 +1,126 @@
 /**
- * Settings screen - Dietary Preferences
+ * Family food rules (saved to the account, so every signed-in device uses them) and account actions.
  */
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import GlobalHeader from '../components/GlobalHeader';
-import { useDietaryPreferences } from '../components/scanner/useDietaryPreferences';
+import VerdictBadge from '../components/VerdictBadge';
+import { useAuth } from '../lib/auth';
 import { colors } from '../lib/colors';
-import { getAllDietaryProfiles } from '../lib/dietary';
-import { typography } from '../lib/typography';
+import { RESTRICTIONS } from '../lib/restrictions';
+import type { RestrictionId } from '../lib/types';
 
-const SettingsScreen: React.FC = () => {
-  // Use the same dietary preferences system as the scanner
-  const { selectedDiet, selectedProfile, saveDietaryPreference, loading } = useDietaryPreferences();
-  
-  // Get all available dietary profiles
-  const allDietaryProfiles = getAllDietaryProfiles();
+export default function SettingsScreen() {
+  const { user, updateRestrictions, signOut } = useAuth();
+  const [saving, setSaving] = useState<RestrictionId | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const selected = new Set(user?.restrictions ?? []);
 
-  const handleDietarySelect = async (dietId: string) => {
+  const toggle = async (id: RestrictionId) => {
+    const next = new Set(selected);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    setSaving(id);
+    setError(null);
     try {
-      // Toggle: if already selected, deselect it
-      const newDietId = selectedDiet === dietId ? null : dietId;
-      await saveDietaryPreference(newDietId);
-    } catch (error) {
-      console.error('Error saving dietary preference:', error);
+      await updateRestrictions([...next]);
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setSaving(null);
     }
   };
 
-
   return (
     <View style={styles.container}>
-      <GlobalHeader showBackButton={true} title="Settings" />
-      
-      <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-        {/* Dietary Preferences Section */}
-        <View style={[styles.section, styles.firstSection]}>
-          <Text style={styles.sectionTitle}>Dietary Preferences</Text>
-          
-          {selectedProfile && (
-            <View style={styles.currentSelectionBanner}>
-              <Text style={styles.currentSelectionText}>
-                Current Selection: {selectedProfile.emoji} {selectedProfile.name}
-              </Text>
-              <Text style={styles.currentSelectionDescription}>
-                {selectedProfile.description}
-              </Text>
-            </View>
-          )}
-          
-          <Text style={styles.sectionDescription}>
-            {selectedProfile 
-              ? "Tap another diet to switch, or tap your current selection to remove it."
-              : "Select your dietary restriction for personalized food scanning."
-            }
+      <GlobalHeader title="Settings" showBackButton showSettings={false} />
+      <ScrollView contentContainerStyle={styles.content}>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Food rules</Text>
+          <Text style={styles.description}>
+            Pick everything your child needs to avoid. These are saved to your family account, so every phone signed in to it checks for the same things.
           </Text>
-          
-          {allDietaryProfiles.map((diet, index) => (
-            <TouchableOpacity
-              key={diet.id}
-              style={[
-                styles.preferenceItem,
-                selectedDiet === diet.id && styles.selectedPreferenceItem,
-                index === allDietaryProfiles.length - 1 && styles.lastItem
-              ]}
-              onPress={() => handleDietarySelect(diet.id)}
-            >
-              <View style={styles.preferenceLeft}>
-                <View style={styles.emojiContainer}>
-                  <Text style={styles.emoji}>{diet.emoji}</Text>
+          {error && <Text style={styles.error}>{error}</Text>}
+          {RESTRICTIONS.map((r) => {
+            const on = selected.has(r.id);
+            return (
+              <TouchableOpacity
+                key={r.id}
+                style={[styles.item, on && styles.itemOn]}
+                onPress={() => toggle(r.id)}
+                disabled={saving !== null}
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked: on }}
+              >
+                <Text style={styles.emoji}>{r.emoji}</Text>
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.itemLabel}>{r.label}</Text>
+                  <Text style={styles.itemDescription}>{r.description}</Text>
                 </View>
-                <View style={styles.preferenceTextContainer}>
-                  <Text style={[
-                    styles.preferenceLabel,
-                    selectedDiet === diet.id && styles.selectedPreferenceLabel
-                  ]}>
-                    {diet.name}
-                  </Text>
-                  <Text style={styles.preferenceDescription}>
-                    Avoids: {diet.avoidIngredients.join(', ')}
-                  </Text>
-                </View>
-              </View>
-              {selectedDiet === diet.id && (
-                <Ionicons 
-                  name="checkmark-circle" 
-                  size={24} 
-                  color={colors.accentBlue} 
-                />
-              )}
-            </TouchableOpacity>
-          ))}
+                <Ionicons name={on ? 'checkmark-circle' : 'ellipse-outline'} size={26} color={on ? colors.accentBlue : colors.border} />
+              </TouchableOpacity>
+            );
+          })}
         </View>
 
-        {/* Help & Info Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Help & Info</Text>
-          <TouchableOpacity style={styles.infoItem}>
-            <View style={styles.infoLeft}>
-              <View style={styles.emojiContainer}>
-                <Text style={styles.emoji}>🎨</Text>
-              </View>
-              <Text style={styles.infoLabel}>About the Colors</Text>
-            </View>
-            <Ionicons 
-              name="chevron-forward" 
-              size={20} 
-              color={colors.text.secondary} 
-            />
+          <Text style={styles.sectionTitle}>What the colours mean</Text>
+          <Legend verdict="good" text="Nothing on the label breaks your rules." />
+          <Legend verdict="caution" text="“May contain”, or something worth checking with a grown-up." />
+          <Legend verdict="avoid" text="Contains something on your list." />
+          <Legend verdict="unknown" text="The label didn't have enough information." />
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Account</Text>
+          <Text style={styles.description}>Signed in as {user?.email}</Text>
+          <TouchableOpacity style={styles.signOut} onPress={signOut} accessibilityRole="button">
+            <Text style={styles.signOutText}>Sign out</Text>
           </TouchableOpacity>
         </View>
 
-        {/* App Information */}
-        <View style={styles.appInfoSection}>
-          <Text style={styles.appName}>NutriLens</Text>
-          <Text style={styles.appVersion}>Version 1.0.0</Text>
-          <Text style={styles.appTagline}>Helping kids make safe food choices</Text>
-        </View>
+        <Text style={styles.footer}>NutriLens · Product data © Open Food Facts contributors (ODbL)</Text>
       </ScrollView>
     </View>
   );
-};
+}
+
+function Legend({ verdict, text }: { verdict: React.ComponentProps<typeof VerdictBadge>['verdict']; text: string }) {
+  return (
+    <View style={styles.legendRow}>
+      <View style={{ width: 96 }}>
+        <VerdictBadge verdict={verdict} size="small" />
+      </View>
+      <Text style={styles.legendText}>{text}</Text>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.neutralBG,
-    paddingTop: 15,
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 20,
-  },
-  headerMessage: {
-    fontSize: typography.fontSize.base,
-    color: colors.text.primary,
-    textAlign: 'center',
-    marginVertical: 20,
-    lineHeight: 22,
-  },
-  section: {
-    backgroundColor: colors.surface,
-    borderRadius: 16,
-    marginBottom: 20,
-    overflow: 'hidden',
-  },
-  firstSection: {
-    marginTop: 30,
-  },
-  sectionTitle: {
-    fontSize: typography.fontSize.lg,
-    fontWeight: typography.fontWeight.semiBold,
-    color: colors.text.primary,
-    padding: 20,
-    paddingBottom: 12,
-  },
-  preferenceItem: {
+  container: { flex: 1, backgroundColor: colors.neutralBG },
+  content: { padding: 16, paddingBottom: 48 },
+  section: { backgroundColor: colors.surface, borderRadius: 16, padding: 16, marginBottom: 16 },
+  sectionTitle: { fontSize: 18, fontWeight: '700', color: colors.text.primary, marginBottom: 6 },
+  description: { color: colors.text.secondary, fontSize: 14, marginBottom: 12, lineHeight: 20 },
+  error: { color: colors.alertRed, marginBottom: 8 },
+  item: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.text.secondary + '20',
-  },
-  preferenceLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  emojiContainer: {
-    width: 32,
-    height: 32,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  emoji: {
-    fontSize: 20,
-  },
-  preferenceLabel: {
-    fontSize: typography.fontSize.base,
-    fontWeight: typography.fontWeight.medium,
-    color: colors.text.primary,
-  },
-  infoItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingVertical: 16,
-  },
-  infoLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  infoLabel: {
-    fontSize: typography.fontSize.base,
-    fontWeight: typography.fontWeight.medium,
-    color: colors.text.primary,
-  },
-  appInfoSection: {
-    backgroundColor: colors.surface,
-    borderRadius: 16,
-    padding: 20,
-    alignItems: 'center',
-    marginBottom: 40,
-  },
-  appName: {
-    fontSize: typography.fontSize.lg,
-    fontWeight: typography.fontWeight.semiBold,
-    color: colors.text.primary,
-    marginBottom: 4,
-  },
-  appVersion: {
-    fontSize: typography.fontSize.sm,
-    color: colors.text.secondary,
+    gap: 12,
+    padding: 12,
+    borderRadius: 12,
+    borderWidth: 1.5,
+    borderColor: colors.border,
     marginBottom: 8,
   },
-  appTagline: {
-    fontSize: typography.fontSize.sm,
-    color: colors.text.secondary,
-    textAlign: 'center',
-  },
-  // New styles for dietary preferences
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  loadingText: {
-    fontSize: typography.fontSize.base,
-    color: colors.text.secondary,
-  },
-  currentSelectionBanner: {
-    backgroundColor: colors.accentBlue + '10',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: colors.accentBlue + '30',
-  },
-  currentSelectionText: {
-    fontSize: typography.fontSize.base,
-    fontWeight: typography.fontWeight.semiBold,
-    color: colors.accentBlue,
-    marginBottom: 4,
-  },
-  currentSelectionDescription: {
-    fontSize: typography.fontSize.sm,
-    color: colors.text.secondary,
-  },
-  sectionDescription: {
-    fontSize: typography.fontSize.sm,
-    color: colors.text.secondary,
-    marginBottom: 16,
-    lineHeight: 20,
-  },
-  selectedPreferenceItem: {
-    backgroundColor: colors.accentBlue + '05',
-    borderWidth: 1,
-    borderColor: colors.accentBlue + '20',
-  },
-  preferenceTextContainer: {
-    flex: 1,
-  },
-  preferenceDescription: {
-    fontSize: typography.fontSize.xs,
-    color: colors.text.secondary,
-    marginTop: 2,
-  },
-  selectedPreferenceLabel: {
-    color: colors.accentBlue,
-    fontWeight: typography.fontWeight.semiBold,
-  },
-  lastItem: {
-    borderBottomWidth: 0,
-  },
+  itemOn: { borderColor: colors.accentBlue, backgroundColor: '#F0F4FF' },
+  emoji: { fontSize: 24 },
+  itemLabel: { fontSize: 16, fontWeight: '600', color: colors.text.primary },
+  itemDescription: { fontSize: 13, color: colors.text.secondary, marginTop: 2 },
+  legendRow: { flexDirection: 'row', alignItems: 'center', paddingVertical: 6 },
+  legendText: { flex: 1, color: colors.text.primary, fontSize: 14 },
+  signOut: { borderRadius: 12, borderWidth: 1.5, borderColor: colors.alertRed, paddingVertical: 12, alignItems: 'center' },
+  signOutText: { color: colors.alertRed, fontWeight: '700', fontSize: 16 },
+  footer: { textAlign: 'center', color: colors.text.secondary, fontSize: 12 },
 });
-
-export default SettingsScreen;

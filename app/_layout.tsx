@@ -1,33 +1,50 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
+import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { useEffect } from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import { AuthProvider, useAuth } from '../lib/auth';
+import { colors } from '../lib/colors';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+/** Sends signed-out users to the login screen and signed-in users away from it. */
+function AuthGate() {
+  const { user, ready } = useAuth();
+  const segments = useSegments();
+  const router = useRouter();
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+  useEffect(() => {
+    if (!ready) return;
+    const first = segments[0] as string | undefined;
+    const onLogin = !first || first === 'index';
+    if (!user && !onLogin) router.replace('/');
+    if (user && onLogin) router.replace('/home');
+  }, [user, ready, segments, router]);
 
-export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  if (!ready) {
+    return (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.neutralBG }}>
+        <ActivityIndicator color={colors.accentBlue} />
+      </View>
+    );
+  }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="index" options={{ title: 'Login',
-          headerLeft: () => null, // removes back arrow
-          gestureEnabled: false,  // disables swipe back on iOS
-          headerShown: true,
-        }} />
-          <Stack.Screen name="main_menu" options={{ title: 'NutriLens', headerShown: false }} />
-          <Stack.Screen name="scanner" options={{ title: 'Scan Product', headerShown: false }} />
-          <Stack.Screen name="search" options={{ title: 'Search Products', headerShown: false }} />
-          <Stack.Screen name="history_menu" options={{ title: 'History', headerShown: false }} />
-          <Stack.Screen name="settings" options={{ title: 'Settings', headerShown: false }} />
-          <Stack.Screen name="product-detail" options={{ title: 'Product Detail', headerShown: false }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.neutralBG } }}>
+      <Stack.Screen name="index" options={{ gestureEnabled: false }} />
+      <Stack.Screen name="home" options={{ gestureEnabled: false }} />
+      <Stack.Screen name="scanner" />
+      <Stack.Screen name="search" />
+      <Stack.Screen name="history" />
+      <Stack.Screen name="settings" />
+      <Stack.Screen name="product/[code]" />
+    </Stack>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <AuthProvider>
+      <AuthGate />
+      <StatusBar style="dark" />
+    </AuthProvider>
   );
 }
