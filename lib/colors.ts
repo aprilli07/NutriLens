@@ -1,31 +1,40 @@
 /**
- * Color palette for NutriLens app
- * 5-color limit as per design requirements
+ * Colour palette.
  */
+import type { Ionicons } from '@expo/vector-icons';
+import type React from 'react';
+import type { Status, Verdict } from './types';
+
 export const colors = {
-  // Primary colors
-  primaryGreen: '#36C090',  // Safe ingredients
-  warnYellow: '#F5C746',    // Caution ingredients
-  alertRed: '#F35B5B',      // Avoid ingredients
-  neutralBG: '#F7F7FA',     // Background
-  accentBlue: '#5B8CFF',    // Links/mascot accents
-  
-  // Semantic variations
+  primaryGreen: '#2FA67C', // safe
+  warnYellow: '#D99A00', // caution (dark enough for text on white)
+  alertRed: '#E04848', // avoid
+  neutralBG: '#F7F7FA',
+  accentBlue: '#4C7DF0',
+  unknownGrey: '#7A8699',
+
   text: {
     primary: '#2D3748',
-    secondary: '#718096',
+    secondary: '#5F6B7D',
     inverse: '#FFFFFF',
   },
-  
-  // Background variations
+
   surface: '#FFFFFF',
-  surfaceSecondary: '#F7F7FA',
-  
-  // Status colors
-  success: '#36C090',
-  warning: '#F5C746',
-  error: '#F35B5B',
-  info: '#5B8CFF',
+  border: '#E6E8EF',
 } as const;
 
-export type ColorKey = keyof typeof colors;
+type IconName = React.ComponentProps<typeof Ionicons>['name'];
+
+export const verdictStyle: Record<Verdict, { color: string; label: string; icon: IconName }> = {
+  good: { color: colors.primaryGreen, label: 'Good', icon: 'checkmark-circle' },
+  caution: { color: colors.warnYellow, label: 'Caution', icon: 'warning' },
+  avoid: { color: colors.alertRed, label: 'Avoid', icon: 'close-circle' },
+  unknown: { color: colors.unknownGrey, label: 'Not sure', icon: 'help-circle' },
+};
+
+export const statusStyle: Record<Status, { color: string; label: string; icon: IconName }> = {
+  ok: verdictStyle.good,
+  caution: verdictStyle.caution,
+  avoid: verdictStyle.avoid,
+  unknown: verdictStyle.unknown,
+};

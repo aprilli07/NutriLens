@@ -1,101 +1,42 @@
 /**
- * Verdict badge component showing product safety status
+ * Pill showing a product's verdict.
  */
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { colors } from '../lib/colors';
+import { verdictStyle } from '../lib/colors';
 import { typography } from '../lib/typography';
-import { VerdictBadgeProps } from '../types';
+import type { Verdict } from '../lib/types';
 
-const VerdictBadge: React.FC<VerdictBadgeProps> = ({ 
-  verdict, 
-  size = 'medium' 
-}) => {
-  const getVerdictConfig = () => {
-    switch (verdict) {
-      case 'good':
-        return {
-          icon: 'checkmark-circle' as const,
-          color: colors.primaryGreen,
-          label: 'Good',
-          backgroundColor: colors.surface,
-        };
-      case 'caution':
-        return {
-          icon: 'warning' as const,
-          color: colors.warnYellow,
-          label: 'Caution',
-          backgroundColor: colors.surface,
-        };
-      case 'avoid':
-        return {
-          icon: 'close-circle' as const,
-          color: colors.alertRed,
-          label: 'Avoid',
-          backgroundColor: colors.surface,
-        };
-    }
-  };
+const SIZES = {
+  small: { iconSize: 14, fontSize: 12, padding: 6 },
+  medium: { iconSize: 18, fontSize: 14, padding: 8 },
+  large: { iconSize: 24, fontSize: 18, padding: 12 },
+};
 
-  const config = getVerdictConfig();
-  
-  const getSizeConfig = () => {
-    switch (size) {
-      case 'small':
-        return { iconSize: 16, fontSize: 12, padding: 6 };
-      case 'large':
-        return { iconSize: 24, fontSize: 16, padding: 12 };
-      default: // medium
-        return { iconSize: 20, fontSize: 14, padding: 8 };
-    }
-  };
-
-  const sizeConfig = getSizeConfig();
-
+export default function VerdictBadge({ verdict, size = 'medium' }: { verdict: Verdict; size?: keyof typeof SIZES }) {
+  const config = verdictStyle[verdict];
+  const s = SIZES[size];
   return (
-    <View style={[
-      styles.container,
-      {
-        backgroundColor: config.backgroundColor,
-        borderColor: config.color,
-        paddingHorizontal: sizeConfig.padding,
-        paddingVertical: sizeConfig.padding / 2,
-      }
-    ]}>
-      <Ionicons 
-        name={config.icon} 
-        size={sizeConfig.iconSize} 
-        color={config.color} 
-        style={styles.icon}
-      />
-      <Text style={[
-        styles.label,
-        {
-          color: config.color,
-          fontSize: sizeConfig.fontSize,
-        }
-      ]}>
-        {config.label}
-      </Text>
+    <View
+      accessibilityLabel={`Verdict: ${config.label}`}
+      style={[styles.container, { borderColor: config.color, paddingHorizontal: s.padding, paddingVertical: s.padding / 2 }]}
+    >
+      <Ionicons name={config.icon} size={s.iconSize} color={config.color} style={styles.icon} />
+      <Text style={[styles.label, { color: config.color, fontSize: s.fontSize }]}>{config.label}</Text>
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 16,
-    borderWidth: 1,
+    borderWidth: 1.5,
     alignSelf: 'flex-start',
+    backgroundColor: '#FFFFFF',
   },
-  icon: {
-    marginRight: 4,
-  },
-  label: {
-    fontWeight: typography.fontWeight.medium,
-  },
+  icon: { marginRight: 4 },
+  label: { fontWeight: typography.fontWeight.semiBold },
 });
-
-export default VerdictBadge;

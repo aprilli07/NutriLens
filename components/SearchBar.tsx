@@ -40,6 +40,9 @@ const SearchBar: React.FC<SearchBarProps> = ({
         placeholderTextColor={colors.text.secondary}
         returnKeyType="search"
         clearButtonMode="never"
+        autoCorrect={false}
+        autoCapitalize="none"
+        accessibilityLabel={placeholder}
         onSubmitEditing={onSubmitEditing}
       />
       {value.length > 0 && onClear && (
@@ -91,7 +94,6 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: typography.fontSize.base,
     color: colors.text.primary,
-    fontFamily: typography.fontFamily.regular,
   },
   clearButton: {
     padding: 4,

@@ -5,12 +5,12 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { colors } from '../lib/colors';
 import { typography } from '../lib/typography';
-import OwlMascot from './OwlMascot';
+import OwlMascot, { OwlMood } from './OwlMascot';
 
 interface EmptyStateProps {
   title: string;
   message: string;
-  mood?: 'happy' | 'concerned' | 'warning';
+  mood?: OwlMood;
 }
 
 const EmptyState: React.FC<EmptyStateProps> = ({ 
