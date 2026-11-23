@@ -1,0 +1,787 @@
+{
+  "generatedAt": "2026-11-23T16:58:45.487Z",
+  "mode": "rules",
+  "model": null,
+  "seed": 42,
+  "requestedPairs": 2000,
+  "overall": {
+    "n": 2000,
+    "accuracy": 0.967,
+    "ci95": [
+      0.9582320514487254,
+      0.9739773607123955
+    ],
+    "precision": 0.9632936507936508,
+    "recall": 0.971,
+    "flaggedRecall": 0.979,
+    "confusion": {
+      "tp": 971,
+      "fn": 29,
+      "fp": 37,
+      "tn": 963
+    }
+  },
+  "perRestriction": {
+    "vegan": {
+      "n": 250,
+      "accuracy": 0.976,
+      "ci95": [
+        0.94863720404899,
+        0.9889553733693685
+      ],
+      "precision": 0.9612403100775194,
+      "recall": 0.992,
+      "flaggedRecall": 0.992,
+      "confusion": {
+        "tp": 124,
+        "fn": 1,
+        "fp": 5,
+        "tn": 120
+      }
+    },
+    "vegetarian": {
+      "n": 250,
+      "accuracy": 0.984,
+      "ci95": [
+        0.9595895595167768,
+        0.9937608763455877
+      ],
+      "precision": 0.984,
+      "recall": 0.984,
+      "flaggedRecall": 0.984,
+      "confusion": {
+        "tp": 123,
+        "fn": 2,
+        "fp": 2,
+        "tn": 123
+      }
+    },
+    "glutenFree": {
+      "n": 250,
+      "accuracy": 0.924,
+      "ci95": [
+        0.8843577467284998,
+        0.9508087508038197
+      ],
+      "precision": 0.8785714285714286,
+      "recall": 0.984,
+      "flaggedRecall": 0.984,
+      "confusion": {
+        "tp": 123,
+        "fn": 2,
+        "fp": 17,
+        "tn": 108
+      }
+    },
+    "dairyFree": {
+      "n": 250,
+      "accuracy": 0.972,
+      "ci95": [
+        0.943341533054129,
+        0.9863721151422264
+      ],
+      "precision": 0.9609375,
+      "recall": 0.984,
+      "flaggedRecall": 0.992,
+      "confusion": {
+        "tp": 123,
+        "fn": 2,
+        "fp": 5,
+        "tn": 120
+      }
+    },
+    "eggFree": {
+      "n": 250,
+      "accuracy": 0.972,
+      "ci95": [
+        0.943341533054129,
+        0.9863721151422264
+      ],
+      "precision": 1,
+      "recall": 0.944,
+      "flaggedRecall": 0.944,
+      "confusion": {
+        "tp": 118,
+        "fn": 7,
+        "fp": 0,
+        "tn": 125
+      }
+    },
+    "nutFree": {
+      "n": 250,
+      "accuracy": 0.98,
+      "ci95": [
+        0.9540437045850131,
+        0.9914278020553485
+      ],
+      "precision": 0.96875,
+      "recall": 0.992,
+      "flaggedRecall": 0.992,
+      "confusion": {
+        "tp": 124,
+        "fn": 1,
+        "fp": 4,
+        "tn": 121
+      }
+    },
+    "peanutFree": {
+      "n": 250,
+      "accuracy": 0.948,
+      "ci95": [
+        0.9130774345624312,
+        0.9693626383019062
+      ],
+      "precision": 0.9745762711864406,
+      "recall": 0.92,
+      "flaggedRecall": 0.96,
+      "confusion": {
+        "tp": 115,
+        "fn": 10,
+        "fp": 3,
+        "tn": 122
+      }
+    },
+    "soyFree": {
+      "n": 250,
+      "accuracy": 0.98,
+      "ci95": [
+        0.9540437045850131,
+        0.9914278020553485
+      ],
+      "precision": 0.9918032786885246,
+      "recall": 0.968,
+      "flaggedRecall": 0.984,
+      "confusion": {
+        "tp": 121,
+        "fn": 4,
+        "fp": 1,
+        "tn": 124
+      }
+    }
+  },
+  "errors": [
+    {
+      "code": "0745092006942",
+      "name": "Gourmet Jelly Beans",
+      "restriction": "vegan",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0123138120218",
+      "name": "Vegan Mac",
+      "restriction": "vegan",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "cheese"
+      ]
+    },
+    {
+      "code": "05717337",
+      "name": "amys pizza",
+      "restriction": "vegan",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "shellfish",
+        "mozzarella",
+        "milk",
+        "eggs"
+      ]
+    },
+    {
+      "code": "0628634118269",
+      "name": "Very Berry Plant-Based Cupcakes",
+      "restriction": "vegan",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "butter"
+      ]
+    },
+    {
+      "code": "0840147900548",
+      "name": "Plain un cream cheese",
+      "restriction": "vegan",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "cheese"
+      ]
+    },
+    {
+      "code": "5060878780423",
+      "name": "Hummus Chips",
+      "restriction": "vegan",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "cream"
+      ]
+    },
+    {
+      "code": "0070074680712",
+      "name": "Similac 360 Total Care Sensitive",
+      "restriction": "vegetarian",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0073390020941",
+      "name": "Cherry sugar free gum, cherry",
+      "restriction": "vegetarian",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0670541144336",
+      "name": "moms place gluten, dairy free cream of chicken soup mix",
+      "restriction": "vegetarian",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "chicken"
+      ]
+    },
+    {
+      "code": "4260648134949",
+      "name": "Creatine Powder",
+      "restriction": "vegetarian",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "pescado"
+      ]
+    },
+    {
+      "code": "0028934010018",
+      "name": "Original Tangy Bbq Sauce",
+      "restriction": "glutenFree",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0049022763180",
+      "name": "Happy Spring Milk Chocolate Egg",
+      "restriction": "glutenFree",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0041335003397",
+      "name": "Country French with Orange Blossom Honey Dressing",
+      "restriction": "glutenFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "flour"
+      ]
+    },
+    {
+      "code": "0060383039653",
+      "name": "Sea saltcauliflower crackers",
+      "restriction": "glutenFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "gluten"
+      ]
+    },
+    {
+      "code": "00828147",
+      "name": "Gluten Free Christmas Pudding",
+      "restriction": "glutenFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "breadcrumbs"
+      ]
+    },
+    {
+      "code": "0085239166031",
+      "name": "chocolate chip whole grain baked bars",
+      "restriction": "glutenFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "flour",
+        "oats"
+      ]
+    },
+    {
+      "code": "0628678617803",
+      "name": "Cinnamon Crisps",
+      "restriction": "glutenFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "flour"
+      ]
+    },
+    {
+      "code": "0691535302020",
+      "name": "Double chocolate cookies",
+      "restriction": "glutenFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "flour",
+        "oat"
+      ]
+    },
+    {
+      "code": "0719833094482",
+      "name": "The MealBetix Lifestyle",
+      "restriction": "glutenFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "barley"
+      ]
+    },
+    {
+      "code": "0853894007699",
+      "name": "Salted Peanut Butter Crunch",
+      "restriction": "glutenFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "flour"
+      ]
+    },
+    {
+      "code": "0856294002226",
+      "name": "Golden Lotus Drops",
+      "restriction": "glutenFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "barley"
+      ]
+    },
+    {
+      "code": "0856920005935",
+      "name": "Cookies And Cream",
+      "restriction": "glutenFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "flour"
+      ]
+    },
+    {
+      "code": "0888849002191",
+      "name": "Chocolate Chip Cookie Dough",
+      "restriction": "glutenFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "ble"
+      ]
+    },
+    {
+      "code": "22252555",
+      "name": "asda free from salad cream",
+      "restriction": "glutenFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "flour"
+      ]
+    },
+    {
+      "code": "5032722309555",
+      "name": "biona tomato basil soup",
+      "restriction": "glutenFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "wheat"
+      ]
+    },
+    {
+      "code": "5045097328021",
+      "name": "GLUTEN FREE CHICKEN MAYO with seasoned mayonnaise",
+      "restriction": "glutenFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "flour"
+      ]
+    },
+    {
+      "code": "5060193938059",
+      "name": "aroma coffee syrup",
+      "restriction": "glutenFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "malt extract"
+      ]
+    },
+    {
+      "code": "5397136019781",
+      "name": "Tomato Ketchup",
+      "restriction": "glutenFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "malt vinegar"
+      ]
+    },
+    {
+      "code": "9326666610522",
+      "name": "blueberry granola",
+      "restriction": "glutenFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "gluten"
+      ]
+    },
+    {
+      "code": "0030223010203",
+      "name": "Ham & Cheese",
+      "restriction": "dairyFree",
+      "truth": true,
+      "status": "caution",
+      "findings": [
+        "cheese"
+      ]
+    },
+    {
+      "code": "0719283449252",
+      "name": "Brownie Platter",
+      "restriction": "dairyFree",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0059950300104",
+      "name": "Original",
+      "restriction": "dairyFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "milk"
+      ]
+    },
+    {
+      "code": "0813377025633",
+      "name": "Berry sunflower butter",
+      "restriction": "dairyFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "butter"
+      ]
+    },
+    {
+      "code": "5060456690649",
+      "name": "The smokin' vegan",
+      "restriction": "dairyFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "dairy"
+      ]
+    },
+    {
+      "code": "5060746520991",
+      "name": "Impact Vegan Protein",
+      "restriction": "dairyFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "creme"
+      ]
+    },
+    {
+      "code": "9319133332935",
+      "name": "Nut Bar Almond, Cashew & Cranberry",
+      "restriction": "dairyFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "milk"
+      ]
+    },
+    {
+      "code": "0024300044731",
+      "name": "Butterfly Creme Filled Cakes",
+      "restriction": "eggFree",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0025600091517",
+      "name": "Gingerbread Kandy Kakes",
+      "restriction": "eggFree",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0030034013042",
+      "name": "Mini Round Cheese Ravioli",
+      "restriction": "eggFree",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0033700004023",
+      "name": "Gourmet Bakery Style Cookie Dough",
+      "restriction": "eggFree",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0035826094537",
+      "name": "Pancake & Waffle Mix",
+      "restriction": "eggFree",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0045251003240",
+      "name": "Turtle Danish",
+      "restriction": "eggFree",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0062639364441",
+      "name": "Heavenly Dulce de Leche Extra Creamy Ice Cream",
+      "restriction": "eggFree",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0030034105068",
+      "name": "Classic Trail Mix",
+      "restriction": "nutFree",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0024126018350",
+      "name": "Keto Bread",
+      "restriction": "nutFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "tree nuts"
+      ]
+    },
+    {
+      "code": "00394697",
+      "name": "all butter cookies with stem ginger and oats",
+      "restriction": "nutFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "nut"
+      ]
+    },
+    {
+      "code": "00403139",
+      "name": "Black Olive crackers",
+      "restriction": "nutFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "nut"
+      ]
+    },
+    {
+      "code": "0687456224381",
+      "name": "Cookies and Creme Granola Minis",
+      "restriction": "nutFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "tree nuts"
+      ]
+    },
+    {
+      "code": "0007078404910",
+      "name": "Ice cream cones, nutty sundae",
+      "restriction": "peanutFree",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0011110570451",
+      "name": "Fun Daze Sundaes Frozen Yogurt Cones",
+      "restriction": "peanutFree",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0023249011491",
+      "name": "Vegan vitamin D3",
+      "restriction": "peanutFree",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0085239035573",
+      "name": "Good & Gather Raw Mixed Nut",
+      "restriction": "peanutFree",
+      "truth": true,
+      "status": "caution",
+      "findings": [
+        "peanut"
+      ]
+    },
+    {
+      "code": "0618551602804",
+      "name": "Kaki Mochi",
+      "restriction": "peanutFree",
+      "truth": true,
+      "status": "caution",
+      "findings": [
+        "peanut"
+      ]
+    },
+    {
+      "code": "0688267576447",
+      "name": "Roasted & Salted Almonds",
+      "restriction": "peanutFree",
+      "truth": true,
+      "status": "caution",
+      "findings": [
+        "peanuts"
+      ]
+    },
+    {
+      "code": "0690166106151",
+      "name": "Salted Pepitas",
+      "restriction": "peanutFree",
+      "truth": true,
+      "status": "caution",
+      "findings": [
+        "peanut"
+      ]
+    },
+    {
+      "code": "0712810991125",
+      "name": "Miravalle, Toasted Seeds",
+      "restriction": "peanutFree",
+      "truth": true,
+      "status": "caution",
+      "findings": [
+        "peanut"
+      ]
+    },
+    {
+      "code": "0810018831745",
+      "name": "Meal Replacement Shake, Vanilla Cake",
+      "restriction": "peanutFree",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "4061459565782",
+      "name": "tropical fruits porridge topper",
+      "restriction": "peanutFree",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0055653172659",
+      "name": "Breaktime Ginger Cookies",
+      "restriction": "peanutFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "arachides"
+      ]
+    },
+    {
+      "code": "0073390614249",
+      "name": "Airhead Extremes Sourfuls",
+      "restriction": "peanutFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "peanut"
+      ]
+    },
+    {
+      "code": "0771047004930",
+      "name": "Milkshake Gummies",
+      "restriction": "peanutFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "peanuts"
+      ]
+    },
+    {
+      "code": "0018053192511",
+      "name": "Udon Noodle Soup With Chicken",
+      "restriction": "soyFree",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0036406302844",
+      "name": "Caesar Salad",
+      "restriction": "soyFree",
+      "truth": true,
+      "status": "ok",
+      "findings": []
+    },
+    {
+      "code": "0039528901018",
+      "name": "Chicago Thin Crust Plum Tomato Sauce, Pepperoni, Mozzarella, Cheddar, And Romano Cheeses On Uno Chicago Thin Crust, Chicago Thin Crust",
+      "restriction": "soyFree",
+      "truth": true,
+      "status": "caution",
+      "findings": [
+        "soybean"
+      ]
+    },
+    {
+      "code": "0423000006573",
+      "name": "rice crispy treats cefco",
+      "restriction": "soyFree",
+      "truth": true,
+      "status": "caution",
+      "findings": [
+        "soy"
+      ]
+    },
+    {
+      "code": "0049568610856",
+      "name": "Vegan fine shred pizza blend",
+      "restriction": "soyFree",
+      "truth": false,
+      "status": "avoid",
+      "findings": [
+        "miso"
+      ]
+    }
+  ]
+}

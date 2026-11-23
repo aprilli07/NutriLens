@@ -1,0 +1,159 @@
+{
+  "generatedAt": "2026-11-23T17:04:25.057Z",
+  "products": 4582682,
+  "seed": 7,
+  "overall": {
+    "queries": 1000,
+    "p50": 5.6,
+    "p95": 34.2,
+    "p99": 89.7,
+    "max": 214.8,
+    "under200ms": 0.997,
+    "withResults": 0.959
+  },
+  "byStyle": {
+    "prefix": {
+      "queries": 250,
+      "p50": 8,
+      "p95": 49,
+      "p99": 72.3,
+      "max": 91.9,
+      "under200ms": 1,
+      "withResults": 1
+    },
+    "words": {
+      "queries": 250,
+      "p50": 4.9,
+      "p95": 22.3,
+      "p99": 34.2,
+      "max": 45.3,
+      "under200ms": 1,
+      "withResults": 0.996
+    },
+    "typo": {
+      "queries": 250,
+      "p50": 4.2,
+      "p95": 19.7,
+      "p99": 42.4,
+      "max": 61.1,
+      "under200ms": 1,
+      "withResults": 0.996
+    },
+    "filtered": {
+      "queries": 250,
+      "p50": 7.6,
+      "p95": 58.3,
+      "p99": 203.8,
+      "max": 214.8,
+      "under200ms": 0.988,
+      "withResults": 0.844
+    }
+  },
+  "slowest": [
+    {
+      "style": "filtered",
+      "q": "lowfat",
+      "restrictions": "peanutFree,eggFree,vegan",
+      "ms": 214.7676250000004,
+      "hits": 1
+    },
+    {
+      "style": "filtered",
+      "q": "cheddar",
+      "restrictions": "vegan",
+      "ms": 203.99516700000095,
+      "hits": 2
+    },
+    {
+      "style": "filtered",
+      "q": "sizzle",
+      "restrictions": "glutenFree,vegan,vegetarian",
+      "ms": 203.83816699999988,
+      "hits": 6
+    },
+    {
+      "style": "filtered",
+      "q": "sardines",
+      "restrictions": "eggFree,vegetarian",
+      "ms": 199.1464589999996,
+      "hits": 0
+    },
+    {
+      "style": "filtered",
+      "q": "fromage lait",
+      "restrictions": "dairyFree",
+      "ms": 153.9499590000014,
+      "hits": 1
+    },
+    {
+      "style": "filtered",
+      "q": "winegums",
+      "restrictions": "vegan,lowSugar,vegetarian",
+      "ms": 128.6441250000007,
+      "hits": 2
+    },
+    {
+      "style": "filtered",
+      "q": "wachsbrechbohnen",
+      "restrictions": "eggFree",
+      "ms": 96.38854199999878,
+      "hits": 9
+    },
+    {
+      "style": "filtered",
+      "q": "collagen",
+      "restrictions": "eggFree,vegetarian",
+      "ms": 92.41416600000048,
+      "hits": 20
+    },
+    {
+      "style": "prefix",
+      "q": "sty",
+      "restrictions": "",
+      "ms": 91.92058399999951,
+      "hits": 20
+    },
+    {
+      "style": "prefix",
+      "q": "choco",
+      "restrictions": "",
+      "ms": 89.68000000000029,
+      "hits": 20
+    },
+    {
+      "style": "filtered",
+      "q": "light cream",
+      "restrictions": "peanutFree,nutFree,vegan",
+      "ms": 85.53670799999963,
+      "hits": 9
+    },
+    {
+      "style": "prefix",
+      "q": "gre",
+      "restrictions": "",
+      "ms": 72.2991669999974,
+      "hits": 20
+    },
+    {
+      "style": "filtered",
+      "q": "jambon",
+      "restrictions": "lowSugar,glutenFree,lowSodium",
+      "ms": 70.82391600000119,
+      "hits": 20
+    },
+    {
+      "style": "prefix",
+      "q": "cho",
+      "restrictions": "",
+      "ms": 67.68633399999999,
+      "hits": 20
+    },
+    {
+      "style": "filtered",
+      "q": "chocolate parfait",
+      "restrictions": "lowSodium,peanutFree,soyFree",
+      "ms": 65.22850000000108,
+      "hits": 1
+    }
+  ]
+}
